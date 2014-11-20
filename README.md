@@ -16,4 +16,4 @@ HTTP Server
 Everything else
 ===============
 
-```./[deploy|run|stop]CDN -p \<port\> -o \<origin\> -n \<name\> -u \<username\> -i \<keyfile\>```
+```./[deploy|run|stop]CDN -p <port> -o <origin> -n <name> -u <username> -i <keyfile>```
