@@ -21,7 +21,7 @@ var TransformStream = function(key, cache, next) {
 	this.writable = true;
 	this.key = key;
 	this.cache = cache;
-	this.data = "";
+	this.data = new Buffer("");
 	this.onComplete = next || function(){};
 };
 util.inherits(TransformStream, stream);
@@ -32,7 +32,7 @@ util.inherits(TransformStream, stream);
  */
 TransformStream.prototype.buffer = function(data) {
  	if (data) {
- 		this.data += data;
+ 		this.data = Buffer.concat([ this.data, new Buffer(data) ]);
  		this.emit("data", data);
  	}
 };
@@ -52,12 +52,9 @@ TransformStream.prototype.write = function () {
 TransformStream.prototype.end = function () {
 	this.buffer.apply(this, arguments);
 
-	// get final data
-	var data = this.data;
-
 	// update cache and size
-	this.cache.size += (new Buffer(data)).length;
-	this.cache.cache[this.key] = data;
+	this.cache.size += this.data.length;
+	this.cache.cache[this.key] = this.data;
 
 	// check if we need to remove something
 	this.cache.evict();
@@ -100,7 +97,7 @@ Cache.prototype.set = function(key, next) {
 Cache.prototype.remove = function(key) {
 	var data = this.cache[key];
 	if (data) {
-		var size = this.size - (new Buffer(data)).length;
+		var size = this.size - data.length;
 		this.size = Math.max(0, size);
 		delete this.cache[key];
 	}
@@ -111,7 +108,7 @@ Cache.prototype.remove = function(key) {
  * we exceeded our memory limit
  */
 Cache.prototype.evict = function() {
-	if (this.size > MAX_BYTES) {
+	while (this.size > MAX_BYTES) {
 		var keys = Object.keys(this.cache);
 		this.remove(keys[0]);
 	}
