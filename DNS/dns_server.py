@@ -3,7 +3,9 @@ import socket
 from struct import *
 from dns_header import DNSHeader
 from dns_question import DNSQuestion
+from dns_answer import DNSAnswer
 
+hosts = ['ec2-54-174-6-90.compute-1.amazonaws.com']
 
 def start_server(name, port):
   s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -21,9 +23,15 @@ def start_server(name, port):
   while 1:
     data, addr = s.recvfrom(1024)
     #print data, len(data)
-    header = DNSHeader(data[0:12], parse=True)
+    header = DNSHeader(data[0:12], parse=True, ancount=1)
     print str(header)
     question = DNSQuestion(data[12:])
+    print str(question)
+
+    answer = DNSAnswer(hosts[0], '127.0.0.1')
+    packet = header.construct() + answer.construct()
+    print 'LENGHTH:\t', len(packet)
+    s.sendto(packet, ('127.0.0.1', 55000))
 
 
 # parses the command line args

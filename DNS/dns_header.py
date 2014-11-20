@@ -19,7 +19,6 @@ class DNSHeader():
       self.ancount = ancount
       self.nscount = nscount
       self.arcount = arcount
-
     
 
   def parse(self, data):
@@ -34,14 +33,14 @@ class DNSHeader():
     self.tc = (flags & 512) >> 10
     self.aa = (flags & 1024) >> 11
     self.opcode = (flags & 30720) >> 12
-    self.arcount = (flags & 32768) >> 15
+    self.qr = (flags & 32768) >> 15
 
     self.qdcount = qdcount
     self.ancount = ancount
     self.nscount = nscount
     self.arcount = arcount
 
-  def pack(self):
+  def construct(self):
     second_row = self.rcode +\
       (self.z << 4) +\
       (self.ra << 8) +\
@@ -53,7 +52,7 @@ class DNSHeader():
     return pack('!HHHHHH', self.id, second_row, self.qdcount, self.ancount, self.nscount, self.arcount)
 
   def __str__(self):
-    return "DNSHEADER" \
+    return "DNS HEADER" \
     + "\nID:\t" + str(self.id) \
     + "\nrcode:\t" + str(self.rcode) \
     + "\nz:\t" + str(self.z) \

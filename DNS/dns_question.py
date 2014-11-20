@@ -3,10 +3,17 @@ from struct import *
 class DNSQuestion():
   def __init__(self, data, qtype=0, qclass=0):
     self.qname = self.parse_qname(data)
-    self.qtype= qtype
+    self.qtype = qtype
     self.qclass = qclass
-    print self.qname
-    
+    self.name_length = len(self.qname) + 2
+    self.name_type = self.parse_type(self.name_length, data) # we only handle 1 which is an A type
+    self.name_class = self.parse_class(self.name_length, data)
+
+  def parse_type(self, name_length, data):
+    return unpack('!H', data[name_length:name_length+2])[0]
+
+  def parse_class(self, name_length, data):
+    return ord(data[name_length+3:])
 
   def parse_qname(self, data):
     get_size = True
@@ -27,5 +34,11 @@ class DNSQuestion():
         if count == current_size:
           get_size = True
           count = 0
+
+  def __str__(self):
+    return 'DNS Question\n' +\
+      'QNAME:\t' + str(self.qname) +\
+      '\nQTYPE:\t' + str(self.qtype) +\
+      '\nQCLASS:\t' + str(self.qclass)
 
 
