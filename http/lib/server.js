@@ -12,8 +12,24 @@ var ORIGIN = process.argv[5];
 
 // Create server
 var server = http.createServer(function (req, res) {
+ 	
+	// origin url
  	var url = util.format("http://%s%s", ORIGIN, req.url);
- 	request(url).pipe(res);
+
+ 	// check cache
+ 	var data = cache.get(url);
+
+ 	// if we have data, return it
+ 	// else fetch from origin and cache it
+ 	if (data) {
+ 		console.log('Cached.');
+ 		res.end(data);
+ 	} else {
+ 		console.log('No cache.');
+ 		request(url)
+ 			.pipe(cache.set(url))
+ 			.pipe(res);
+ 	}
 });
 
 // start listening
