@@ -24,12 +24,15 @@ def start_server(name, port):
     data, addr = s.recvfrom(1024)
     #print data, len(data)
     header = DNSHeader(data[0:12], parse=True, ancount=1)
-    print str(header)
+    #print str(header)
     question = DNSQuestion(data[12:])
-    print str(question)
+    #print str(question)
 
+    new_header = DNSHeader(id=666, ancount=1)
     answer = DNSAnswer(hosts[0], '127.0.0.1')
-    packet = header.construct() + answer.construct()
+    print str(new_header)
+    print str(answer)
+    packet = new_header.construct() + answer.construct()
     print 'LENGHTH:\t', len(packet)
     s.sendto(packet, ('127.0.0.1', 55000))
 
