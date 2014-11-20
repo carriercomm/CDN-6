@@ -1,0 +1,19 @@
+{
+    "name": "http-server",
+    "version": "1.0.0",
+    "description": "HTTP Replica Server",
+    "url": "https://github.com/AndrewBarba/cs5700",
+    "author": "Andrew Barba",
+
+    "engines" : {
+        "node" : "0.10.x"
+    },
+
+    "dependencies": {
+        "request": "2.48.x"
+    },
+
+    "scripts": {
+        "start": "node index.js"
+    }
+}
