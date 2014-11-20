@@ -68,7 +68,7 @@ TransformStream.prototype.end = function () {
  * Cache                                                                      *
  *============================================================================*/
 
-var Cache = function(){
+var Cache = function() {
 	this.cache = {};
 	this.size = 0;
 };
