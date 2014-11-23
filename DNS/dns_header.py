@@ -1,7 +1,7 @@
 from struct import *
 
 class DNSHeader():
-  def __init__(self, data, id=0, qr=0, opcode=0, aa=0, tc=0, rd=0, \
+  def __init__(self, data=None, id=0, qr=0, opcode=0, aa=0, tc=0, rd=0, \
     ra=0, z=0, rcode=0, qdcount=0, ancount=0, nscount=0, arcount=0, parse=False):
     if parse:
       self.parse(data)
