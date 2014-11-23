@@ -12,7 +12,6 @@ class DNSQuestion():
 
   def parse_type(self, name_length, data):
     t = unpack('!H', data[name_length:name_length+2])[0]
-    print 'TYPE:', t
     return t
 
   def parse_class(self, name_length, data):
@@ -29,7 +28,7 @@ class DNSQuestion():
         current_size = ord(next_char)
         get_size = False
         if current_size == 0:
-          print 'DOMAIN:', domain
+          self.domain = domain[1:]
           return domain[1:] + '.'
         domain += '.'
       else:
