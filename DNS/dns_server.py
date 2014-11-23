@@ -11,7 +11,7 @@ from math import sin, cos, sqrt, atan2, radians
 host_list = [('ec2-54-174-6-90.compute-1.amazonaws.com', '205.251.192.27')]
 hosts = {}
 radius = 6373.0
-IP = '129.10.116.196'
+IP = '129.10.117.186'
 
 def start_server(dns_server, port):
   s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
