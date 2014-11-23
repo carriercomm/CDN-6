@@ -9,7 +9,9 @@ hosts = ['ec2-54-174-6-90.compute-1.amazonaws.com']
 
 def start_server(name, port):
   s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-  s.bind(('127.0.0.1', port))
+  s.bind((socket.gethostbyname(socket.gethostname()), port))
+  print socket.gethostname()
+  print socket.gethostbyname(socket.gethostname())
   
   '''
   qname = pack('!cscscs', ord('3'), 'www', ord('6'), 'google', ord('3'), 'com')
