@@ -12,7 +12,7 @@ var _ = require('underscore');
  *============================================================================*/
 
 var Metrics = function() {
-	this.responseTime = 100;
+	this.responseTime = 0;
 	this.rpm = 0;
 };
 
@@ -33,7 +33,7 @@ Metrics.prototype.bind = function(server) {
 
 function responseTime(self, server) {
  	
-	var SAMPLE = 10;
+	var SAMPLE = 5;
 	var times = [];
 
 	// listen for incoming request
@@ -50,14 +50,14 @@ function responseTime(self, server) {
  		var total = _.reduce(times, function(a, b){
  			return a + b;
  		}, 0);
- 		self.responseTime = total / times.length;
+ 		self.responseTime = times.length ? (total / times.length) : 0;
  		times = [];
  	}, SAMPLE * 1000);
 };
 
 function requestsPerMinute(self, server) {
 	
-	var SAMPLE = 10; // sample every x seconds
+	var SAMPLE = 5; // sample every x seconds
 	var count = 0; // request count for current sample
 
 	// listen for incoming request
@@ -71,7 +71,5 @@ function requestsPerMinute(self, server) {
 		count = 0;
 	}, SAMPLE * 1000);
 };
-
-
 
 module.exports = new Metrics();
