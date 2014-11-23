@@ -1,5 +1,4 @@
 from struct import *
-import binascii
 
 class DNSAnswer():
   def __init__(self, domain, ip, dns_type=1, dns_class=1, ttl=250, rdlength=4):
@@ -16,7 +15,7 @@ class DNSAnswer():
     p = pack('!HHIHBBBB', self.dns_type, self.dns_class, self.ttl, self.rdlength, int(self.split[0]), int(self.split[1]), int(self.split[2]), int(self.split[3]))
     name = self.construct_name()
     return name + p
-    
+
   def construct_name(self):
     name = None
     for part in self.domain.split('.'):
