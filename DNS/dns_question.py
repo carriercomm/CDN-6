@@ -2,15 +2,18 @@ from struct import *
 
 class DNSQuestion():
   def __init__(self, data, qtype=0, qclass=0):
+    self.data = data
     self.qname = self.parse_qname(data)
     self.qtype = qtype
     self.qclass = qclass
-    self.name_length = len(self.qname) + 2
+    self.name_length = len(self.qname) + 1
     self.name_type = self.parse_type(self.name_length, data) # we only handle 1 which is an A type
     self.name_class = self.parse_class(self.name_length, data)
 
   def parse_type(self, name_length, data):
-    return unpack('!H', data[name_length:name_length+2])[0]
+    t = unpack('!H', data[name_length:name_length+2])[0]
+    print 'TYPE:', t
+    return t
 
   def parse_class(self, name_length, data):
     return ord(data[name_length+3:])
@@ -26,7 +29,8 @@ class DNSQuestion():
         current_size = ord(next_char)
         get_size = False
         if current_size == 0:
-          return domain[1:]
+          print 'DOMAIN:', domain
+          return domain[1:] + '.'
         domain += '.'
       else:
         domain += next_char
@@ -34,6 +38,9 @@ class DNSQuestion():
         if count == current_size:
           get_size = True
           count = 0
+
+  def construct(self):
+    return self.data
 
   def __str__(self):
     return 'DNS Question\n' +\

@@ -9,7 +9,7 @@ hosts = ['ec2-54-174-6-90.compute-1.amazonaws.com']
 
 def start_server(name, port):
   s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-  s.bind((socket.gethostbyname(socket.gethostname()), port))
+  s.bind(('129.10.116.196', port))
   print socket.gethostname()
   print socket.gethostbyname(socket.gethostname())
   
@@ -24,19 +24,15 @@ def start_server(name, port):
   '''
   while 1:
     data, addr = s.recvfrom(1024)
-    #print data, len(data)
-    header = DNSHeader(data[0:12], parse=True, ancount=1)
-    #print str(header)
+    header = DNSHeader(data[0:12], parse=True)
     question = DNSQuestion(data[12:])
-    #print str(question)
-
-    new_header = DNSHeader(id=666, ancount=1)
-    answer = DNSAnswer(hosts[0], '127.0.0.1')
+    new_header = DNSHeader(ancount=1, qdcount=1, id=header.id)
+    answer = DNSAnswer('gsoeller.com', '129.10.116.197')
     print str(new_header)
     print str(answer)
-    packet = new_header.construct() + answer.construct()
+    packet = new_header.construct() + question.construct() + answer.construct()
     print 'LENGHTH:\t', len(packet)
-    s.sendto(packet, ('127.0.0.1', 55000))
+    s.sendto(packet, addr)
 
 
 # parses the command line args
