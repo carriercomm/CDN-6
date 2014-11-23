@@ -10,7 +10,8 @@
     },
 
     "dependencies": {
-        "request": "2.48.x"
+        "request": "2.48.x",
+        "underscore": "1.7.x"
     },
 
     "scripts": {
