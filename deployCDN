@@ -1,7 +1,10 @@
 #!/bin/bash
 port=  origin=  name= username= keyfile=
 
-while getopts "u:n:i:" opt; do
+# list of hosts
+HOSTS="ec2-54-174-6-90.compute-1.amazonaws.com ec2-54-174-6-90.compute-1.amazonaws.com"
+
+while getopts "u:i:" opt; do
   case $opt in
   p)
       port=$OPTARG
@@ -21,8 +24,7 @@ while getopts "u:n:i:" opt; do
   esac
 done
 
-echo "$username"
-echo "$name"
-echo "$keyfile"
-
-ssh -i ${keyfile} ${username}@${name} "bash -s" -- < ./scripts/deploy
+for host in $HOSTS
+do
+  ssh -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/deploy
+done
