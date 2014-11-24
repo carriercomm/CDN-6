@@ -1,13 +1,13 @@
 
 // Dependencies
-var fs = require('fs');
-var http = require('http');
-var util = require('util');
-var request = require('request');
+var fs = require("fs");
+var http = require("http");
+var util = require("util");
+var request = require("request");
 
 // Modules
-var cache = require('./cache');
-var metrics = require('./metrics');
+var cache = require("./cache");
+var metrics = require("./metrics");
 
 // Constants
 var PORT = process.argv[3];
@@ -41,4 +41,4 @@ metrics.bind(server);
 
 // Start listening
 server.listen(PORT);
-console.log('HTTP Server ' + PORT);
+console.log("HTTP Server " + PORT);

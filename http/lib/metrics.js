@@ -1,17 +1,18 @@
 /*============================================================================*
  * Dependencies                                                               *
  *============================================================================*/
-
-var fs = require("fs");
-var stream = require("stream");
+ 
 var util = require("util");
-var _ = require('underscore');
+var _ = require("underscore");
+var utils = require("./utils");
+var cache = require("./cache");
 
 /*============================================================================*
- * Metrics                                                                      *
+ * Metrics                                                                    *
  *============================================================================*/
 
 var Metrics = function() {
+	this.id = utils.guid();
 	this.responseTime = 0;
 	this.rpm = 0;
 };
@@ -28,6 +29,19 @@ Metrics.prototype.bind = function(server) {
 };
 
 /*============================================================================*
+ * Methods                                                                    *
+ *============================================================================*/
+
+Metrics.prototype.toJSON = function() {
+	return {
+		"id": this.id,
+		"responseTime": this.responseTime,
+		"rpm": this.rpm,
+		"cacheSize": cache.size
+	};
+};
+
+/*============================================================================*
  * Monitors                                                                   *
  *============================================================================*/
 
@@ -37,15 +51,15 @@ function responseTime(self, server) {
 	var times = [];
 
 	// listen for incoming request
- 	server.on('request', function(req, res){
+ 	server.on("request", function(req, res){
  		var start = Date.now();
- 		res.on('finish', function(){
+ 		res.on("finish", function(){
  			var diff = Date.now() - start;
  			times.push(diff);
  		});
  	});
 
- 	// run a sample every 10 seconds
+ 	// run a sample every x seconds
  	setInterval(function(){
  		var total = _.reduce(times, function(a, b){
  			return a + b;
@@ -61,11 +75,11 @@ function requestsPerMinute(self, server) {
 	var count = 0; // request count for current sample
 
 	// listen for incoming request
-	server.on('request', function(req, res){
+	server.on("request", function(req, res){
 		count++;	
 	});
 
-	// run a sample every 10 seconds
+	// run a sample every x seconds
 	setInterval(function(){
 		self.rpm = count * (60 / SAMPLE);
 		count = 0;

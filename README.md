@@ -32,7 +32,8 @@ by running a sample every 10 seconds and then reporting that data to the DNS
 server over a TCP socket. A sample payload looks something like:
 ```
 {
-	"ip": "234.56.45.455",
+	"id": "CD5B-4F68-27AA-438E",
+	"ipAddress": "234.56.45.455",
 	"rpm": 93,
 	"responseTime": 84 // miliseconds,
 	"cacheSize": 6745 // bytes
