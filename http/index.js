@@ -1,2 +1,2 @@
-// Start a clustered server
+// Start the server
 require('./lib/server');
