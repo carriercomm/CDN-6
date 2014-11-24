@@ -1,2 +1,2 @@
 #!/bin/bash
-node ./HTTP/index.js "$@"
+node ./http/index.js "$@"
