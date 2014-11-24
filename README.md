@@ -40,7 +40,7 @@ server over a TCP socket. A sample payload looks something like:
 ```
 The biggest optimaztion made in the HTTP server is its use of Node.js Streams.
 Streams allow us to download data, cache it, and respond to the client 
-simultaneously. As chunks of data come in, it passed through a caching stream
+simultaneously. As chunks of data come in, it is passed through a caching stream
 which immediately passes the chunk to the response stream. This allows total
 response time to go from:
 ```
