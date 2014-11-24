@@ -1,11 +1,20 @@
 #!/bin/bash
-username= keyfile=
+port=  origin=  name= username= keyfile=
 
 # list of hosts
 HOSTS=$(cat ./hosts.txt |tr "\n" " ")
 
 while getopts "u:i:" opt; do
   case $opt in
+  p)
+      port=$OPTARG
+      ;;
+  o)
+      origin=$OPTARG
+      ;;
+  n)
+      name=$OPTARG
+      ;;
   u)
       username=$OPTARG
       ;;
@@ -18,5 +27,5 @@ done
 # Deploy HTTP to replica servers
 for host in $HOSTS
 do
-  ssh -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/deploy
+  ssh -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/stop
 done

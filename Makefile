@@ -1,11 +1,4 @@
 
-default:
-	chmod +x ./httpserver
-	chmod +x ./dnsserver
-
-http-server:
-	cd ./http && npm install
-
 http-test:
 	./httpserver -p 40080 -o assets.tablelist.com
 
@@ -14,3 +7,9 @@ ssh:
 
 deploy:
 	./deployCDN -u abarba -i ~/.ssh/cs5700_rsa
+
+run:
+	./runCDN -u abarba -i ~/.ssh/cs5700_rsa -p 40080 -o assets.tablelist.com -n domain.name.com
+
+stop:
+	./stopCDN -u abarba -i ~/.ssh/cs5700_rsa

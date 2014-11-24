@@ -6,8 +6,9 @@ rm -rf CDN
 # clone new repo
 git clone https://github.com/soelgary/CDN.git CDN && cd CDN
 
-# Make
-make default
+# Update script permissions
+chmod +x ./httpserver
+chmod +x ./dnsserver
 
 # install http dependencies
-make http-server
+cd ./http && npm install
