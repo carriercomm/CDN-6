@@ -14,3 +14,6 @@ http-test:
 
 ssh:
 	ssh -i ~/.ssh/cs5700_rsa abarba@ec2-54-174-6-90.compute-1.amazonaws.com
+
+deploy:
+	./deployCDN -u abarba -i ~/.ssh/cs5700_rsa -n ec2-54-174-6-90.compute-1.amazonaws.com

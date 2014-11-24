@@ -1,7 +1,7 @@
 #!/bin/bash
 port=  origin=  name= username= keyfile=
 
-while getopts p:o:n:u:i opt; do
+while getopts "u:i:n:" opt; do
   case $opt in
   p)
       port=$OPTARG
@@ -23,4 +23,8 @@ done
 
 shift $((OPTIND - 1))
 
-ssh -i ~/.ssh/cs5700_rsa abarba@ec2-54-174-6-90.compute-1.amazonaws.com "bash -s" -- < ./scripts/deploy
+echo "$keyfile"
+echo "$username"
+echo "$name"
+
+ssh -i ${keyfile} ${username}@${name} "bash -s" -- < ./scripts/deploy
