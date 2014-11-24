@@ -1,7 +1,7 @@
 #!/bin/bash
 port=  origin=  name= username= keyfile=
 
-while getopts "u:i:n:" opt; do
+while getopts "u:n:i:" opt; do
   case $opt in
   p)
       port=$OPTARG
