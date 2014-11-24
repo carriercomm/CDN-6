@@ -51,10 +51,12 @@ to:
 ```
 totalTime = MAX(downloadTime(), responseTime())
 ```
-In a network where every milisecond counts, this is a major speed improvement
+In a network where every millisecond counts, this is a major speed improvement
 and the biggest reason for choosing Node.js as our HTTP server.
 
+##### DNS Server
 
+For our DNS Server, we decided to use python as the language of choice. We simply used sockets and c-structs to parse and build DNS requests/responses. This is very similar to the other projects in the class except with a different protocol. We also used a 3rd party website to retrieve geolocation data about IP addresses. We want this so we know the closest replica server to the client making the request. Although this is a naive solution, it will be part of the final solution that we will be building. Some future improvements we will make is to have the HTTP server ping the DNS server with stats about their payload. The DNS server will then have enough knowledge to send new clients to a better replica based on how close they are to the replica and the load the replica is under.
 
 
 
