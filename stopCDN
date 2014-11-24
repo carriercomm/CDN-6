@@ -24,8 +24,10 @@ while getopts "u:i:" opt; do
   esac
 done
 
-# Deploy HTTP to replica servers
+# Stop HTTP replica servers
 for host in $HOSTS
 do
   ssh -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/stop
 done
+
+# TODO: Stop DNS server

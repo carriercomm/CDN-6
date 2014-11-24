@@ -1,0 +1,10 @@
+#!/bin/bash
+name=
+
+while getopts "n:" opt; do
+  case $opt in
+  n)
+      name=$OPTARG
+      ;;
+  esac
+done

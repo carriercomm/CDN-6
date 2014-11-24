@@ -7,7 +7,6 @@ rm -rf CDN
 git clone https://github.com/soelgary/CDN.git CDN && cd CDN
 
 # Update script permissions
-chmod +x ./httpserver
+chmod +x ./dnsserver
 
-# install http dependencies
-cd ./http && npm install
+# do whatever you need to...

@@ -15,8 +15,10 @@ while getopts "u:i:" opt; do
   esac
 done
 
-# Deploy HTTP to replica servers
+# Deploy HTTP replica servers
 for host in $HOSTS
 do
   ssh -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/deploy
 done
+
+# TODO: Deploy DNS server
