@@ -1,20 +1,12 @@
 #!/bin/bash
-port=  origin=  name= username= keyfile=
+username= keyfile=
 
 # list of hosts
 HOSTS=$(cat ./hosts.txt |tr "\n" " ")
 
-while getopts "u:i:" opt; do
+# parse command line arguments
+while getopts "u:i:p::o::n::" opt; do
   case $opt in
-  p)
-      port=$OPTARG
-      ;;
-  o)
-      origin=$OPTARG
-      ;;
-  n)
-      name=$OPTARG
-      ;;
   u)
       username=$OPTARG
       ;;
@@ -27,7 +19,5 @@ done
 # Stop HTTP replica servers
 for host in $HOSTS
 do
-  ssh -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/stop
+  ssh -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/stop "$@"
 done
-
-# TODO: Stop DNS server

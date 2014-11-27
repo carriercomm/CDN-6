@@ -1,4 +1,2 @@
 #!/bin/bash
-
-# stop node
-killall python
+killall python > /dev/null 2>&1

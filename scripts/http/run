@@ -1,7 +1,8 @@
 #!/bin/bash
 port=  origin=
 
-while getopts "p:o:" opt; do
+# parse required arguments
+while getopts "p:o:n::u::i::" opt; do
   case $opt in
   p)
       port=$OPTARG
@@ -12,8 +13,10 @@ while getopts "p:o:" opt; do
   esac
 done
 
+echo "$origin : $port"
+
 # kill server
-killall node
+killall node > /dev/null 2>&1
 
 # start server
 cd ./CDN

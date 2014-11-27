@@ -1,4 +1,2 @@
 #!/bin/bash
-
-# stop node
-killall node
+killall node > /dev/null 2>&1

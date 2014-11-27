@@ -4,7 +4,8 @@ username= keyfile=
 # list of hosts
 HOSTS=$(cat ./hosts.txt |tr "\n" " ")
 
-while getopts "u:i:" opt; do
+# parse command line arguments
+while getopts "u:i:p::o::n::" opt; do
   case $opt in
   u)
       username=$OPTARG
@@ -18,7 +19,5 @@ done
 # Deploy HTTP replica servers
 for host in $HOSTS
 do
-  ssh -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/deploy
+  ssh -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/deploy "$@"
 done
-
-# TODO: Deploy DNS server
