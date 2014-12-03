@@ -8,6 +8,12 @@ var utils = require("./utils");
 var cache = require("./cache");
 
 /*============================================================================*
+ * Constants                                                                  *
+ *============================================================================*/
+
+var SAMPLE_TIME = 5.0;
+
+/*============================================================================*
  * Metrics                                                                    *
  *============================================================================*/
 
@@ -35,6 +41,7 @@ Metrics.prototype.bind = function(server) {
 Metrics.prototype.toJSON = function() {
 	return {
 		"id": this.id,
+		"timestamp": Date.now(),
 		"responseTime": this.responseTime,
 		"rpm": this.rpm,
 		"cacheSize": cache.size
@@ -47,7 +54,7 @@ Metrics.prototype.toJSON = function() {
 
 function responseTime(self, server) {
  	
-	var SAMPLE = 5;
+	var SAMPLE = SAMPLE_TIME;
 	var times = [];
 
 	// listen for incoming request
@@ -71,7 +78,7 @@ function responseTime(self, server) {
 
 function requestsPerMinute(self, server) {
 	
-	var SAMPLE = 5; // sample every x seconds
+	var SAMPLE = SAMPLE_TIME; // sample every x seconds
 	var count = 0; // request count for current sample
 
 	// listen for incoming request
