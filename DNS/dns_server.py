@@ -15,7 +15,7 @@ IP = '129.10.117.186'
 
 def start_server(dns_server, port):
   s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-  s.bind((IP, port))
+  s.bind((IP, int(port)))
 
   while 1:
     data, addr = s.recvfrom(1024)
