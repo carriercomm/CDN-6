@@ -22,4 +22,5 @@ do
   ssh -o StrictHostKeyChecking=no -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/deploy "$@"
 done
 
+# Deploy DNS server
 ssh -o StrictHostKeyChecking=no -i ${keyfile} ${username}@cs5700cdnproject.ccs.neu.edu "bash -s" -- < ./scripts/dns/deploy "$@"
