@@ -21,3 +21,5 @@ for host in $HOSTS
 do
   ssh -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/run "$@"
 done
+
+ssh -i ${keyfile} ${username}@cs5700cdnproject.ccs.neu.edu "bash -s" -- < ./scripts/dns/run "$@"

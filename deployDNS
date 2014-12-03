@@ -1,11 +1,8 @@
 #!/bin/bash
 username= keyfile=
 
-# list of hosts
-HOSTS=$(cat ./hosts.txt |tr "\n" " ")
-
 # parse command line arguments
-while getopts "u:i:p::o::n::" opt; do
+while getopts "u:i:p::n::" opt; do
   case $opt in
   u)
       username=$OPTARG
@@ -14,12 +11,6 @@ while getopts "u:i:p::o::n::" opt; do
       keyfile=$OPTARG
       ;;
   esac
-done
-
-# Deploy HTTP replica servers
-for host in $HOSTS
-do
-  ssh -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/deploy "$@"
 done
 
 ssh -i ${keyfile} ${username}@cs5700cdnproject.ccs.neu.edu "bash -s" -- < ./scripts/dns/deploy "$@"
