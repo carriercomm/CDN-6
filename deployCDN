@@ -19,5 +19,5 @@ done
 # Deploy HTTP replica servers
 for host in $HOSTS
 do
-  ssh -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/deploy "$@"
+  ssh -o StrictHostKeyChecking=no -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/deploy "$@"
 done

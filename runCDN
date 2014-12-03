@@ -19,5 +19,5 @@ done
 # Start HTTP replica servers
 for host in $HOSTS
 do
-  ssh -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/run "$@"
+  ssh -o StrictHostKeyChecking=no -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/run "$@"
 done
