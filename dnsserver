@@ -1,2 +1,2 @@
 #!/bin/bash
-python ./dns/dns_server.py "$@"
+python ./DNS/dns_server.py "$@"

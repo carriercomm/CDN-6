@@ -1,10 +1,20 @@
 #!/bin/bash
-name=
+port=  name=
 
-while getopts "n:" opt; do
+# parse required arguments
+while getopts "p:n:o::u::i::" opt; do
   case $opt in
+  p)
+      port=$OPTARG
+      ;;
   n)
       name=$OPTARG
       ;;
   esac
 done
+
+echo "$name : $port"
+
+# start server
+cd ./CDN
+nohup ./dnsserver -p ${port} -n ${name} > /dev/null 2>&1 &

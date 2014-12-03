@@ -21,3 +21,5 @@ for host in $HOSTS
 do
   ssh -o StrictHostKeyChecking=no -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/stop "$@"
 done
+
+ssh -o StrictHostKeyChecking=no -i ${keyfile} ${username}@cs5700cdnproject.ccs.neu.edu "bash -s" -- < ./scripts/dns/stop "$@"
