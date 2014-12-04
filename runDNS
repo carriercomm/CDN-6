@@ -1,0 +1,16 @@
+#!/bin/bash
+username= keyfile=
+
+# parse command line arguments
+while getopts "u:i:p::o::n::" opt; do
+  case $opt in
+  u)
+      username=$OPTARG
+      ;;
+  i)
+      keyfile=$OPTARG
+      ;;
+  esac
+done
+echo "ABout to ssh"
+ssh -i ${keyfile} ${username}@cs5700cdnproject.ccs.neu.edu "bash -s" -- < ./scripts/dns/run "$@"

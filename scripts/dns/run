@@ -1,6 +1,7 @@
 #!/bin/bash
 port=  name=
 
+echo "sshd in"
 # parse required arguments
 while getopts "p:n:o::u::i::" opt; do
   case $opt in
