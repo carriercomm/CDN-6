@@ -11,6 +11,9 @@ class ScamperServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     for host in host_list:
       self.socket.sendto(data, (host[1], SCAMPER_PORT))
 
+  def update_rtt(self, client_ip, replica_ip, rtt):
+    self.dnsserver.update_rtt(client_ip, replica_ip, rtt)
+
   def start_dns(self, ip, port, dns_server, hosts, host_list):
     self.dnsserver = DNSServer((ip, port), DNSRequestHandler)
     self.dnsserver.dns_server = dns_server

@@ -11,6 +11,7 @@ class DNSRequestHandler(SocketServer.BaseRequestHandler):
     best_ip = self.get_metrics(self.client_address[0])
     if best_ip == None:
       best_ip = self.find_closest_location(self.client_address[0])
+      self.server.send_ip(self.client_address[0])
     header = DNSHeader(self.data[0:12], parse=True)
     question = DNSQuestion(self.data[12:])
     domain = question.domain

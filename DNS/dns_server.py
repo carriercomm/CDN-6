@@ -37,9 +37,9 @@ def start_server(dns_server, port):
   dns_server_thread.setDaemon(True)
   dns_server_thread.start()
   '''
-  scamper_server = ScamperServer((IP, 44445), ScamperRequestHandler)
+  scamper_server = ScamperServer((IP, 44446), ScamperRequestHandler)
   scamper_server.start_dns(IP, port, dns_server, hosts, host_list)
-  #scamper_server.serve_forever()
+  scamper_server.serve_forever()
   #scamper_server.send_ip('vw')
   rtt = 500
   scamper_server.dnsserver.ip_rtt['world'] = 'hey'
