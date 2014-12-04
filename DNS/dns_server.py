@@ -12,6 +12,7 @@ host_list = [('ec2-54-174-6-90.compute-1.amazonaws.com', '205.251.192.27')]
 hosts = {}
 radius = 6373.0
 IP = '129.10.117.186'
+IP = '127.0.0.1'
 
 def start_server(dns_server, port):
   s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -31,6 +32,11 @@ def start_server(dns_server, port):
 
 def find_closest_location(ip_address):
   coord = find_coordinates(ip_address)
+  try:
+    if coord['status'] == 'fail':
+      return host_list[0][1]
+  except Exception:
+    pass
   closest_distance = None
   closest_ip = None
   for host in hosts:
