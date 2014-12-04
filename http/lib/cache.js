@@ -5,6 +5,7 @@
 var fs = require("fs");
 var stream = require("stream");
 var util = require("util");
+var _ = require("underscore");
 var dist = require("./wiki-en");
 
 /*============================================================================*
@@ -120,7 +121,7 @@ Cache.prototype.setMeta = function(key, res) {
  * and update cache size
  */
 Cache.prototype.remove = function(key) {
-	var data = this.cache[key];
+	var data = this.get(key);
 	if (data) {
 		var size = this.size - data.length;
 		this.size = Math.max(0, size);
