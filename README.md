@@ -58,7 +58,25 @@ and the biggest reason for choosing Node.js as our HTTP server.
 
 For our DNS Server, we decided to use python as the language of choice. We simply used sockets and c-structs to parse and build DNS requests/responses. This is very similar to the other projects in the class except with a different protocol. We also used a 3rd party website to retrieve geolocation data about IP addresses. We want this so we know the closest replica server to the client making the request. Although this is a naive solution, it will be part of the final solution that we will be building. Some future improvements we will make is to have the HTTP server ping the DNS server with stats about their payload. The DNS server will then have enough knowledge to send new clients to a better replica based on how close they are to the replica and the load the replica is under.
 
+Load Balancing
+==============
 
+##### DNS Scamper Client
+The DNS Scamper Client will send a request to each replica server when it gets a DNS request for an unknown IP address. The format of the request will be as follows
+```
+{
+	'ip': '123.45.67.89'
+}
 
+```
 
+The client will expect a response as follows
+```
+{
+	'ip': '123.45.67.89'
+	'rtt': 123 // milliseconds
+}
 
+```
+
+The port the client will be using is ```44446```. This is static and will NOT change. Any data sent to that port will be parsed as a scamper response.
