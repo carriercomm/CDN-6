@@ -13,7 +13,6 @@ class ScamperServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
 
   def start_dns(self, ip, port, dns_server, hosts, host_list):
     self.dnsserver = DNSServer((ip, port), DNSRequestHandler)
-    self.dnsserver.temp = "hello"
     self.dnsserver.dns_server = dns_server
     self.dnsserver.ip_rtt = {}
     self.dnsserver.hosts = hosts
