@@ -37,6 +37,8 @@ class DNSQuestion():
         if count == current_size:
           get_size = True
           count = 0
+    print 'ERROR'
+    print data, domain
 
   def construct(self):
     return self.data
