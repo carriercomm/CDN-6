@@ -1,73 +1,44 @@
 from optparse import OptionParser
 import socket
 from struct import *
-from dns_header import DNSHeader
-from dns_question import DNSQuestion
-from dns_answer import DNSAnswer
-import urllib2
 import json
 from math import sin, cos, sqrt, atan2, radians
+import json
+import threading
+import time
+import SocketServer
+from DNSRequestHandler import DNSRequestHandler
+from DNSServer import DNSServer
+from ScamperRequestHandler import ScamperRequestHandler
+from ScamperServer import ScamperServer
+from GeoLocator import Locator
 
 host_list = [('ec2-54-174-6-90.compute-1.amazonaws.com', '205.251.192.27')]
 hosts = {}
-radius = 6373.0
-IP = '129.10.117.186'
-#IP = '127.0.0.1'
+#IP = '129.10.117.186'
+IP = '127.0.0.1'
+SCAMPER_PORT = 44445
 
 def start_server(dns_server, port):
-  s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-  s.bind((IP, int(port)))
+  server = DNSServer((IP, port), DNSRequestHandler)
+  server.dns_server = dns_server
+  server.ip_rtt = {}
+  server.hosts = hosts
+  server.host_list = host_list
+  server_A_thread = threading.Thread(target=server.serve_forever)
+  server_A_thread.setDaemon(True)
+  server_A_thread.start()
+  #scamper_server = ScamperServer((IP, 44445), ScamperRequestHandler)
+  #scamper_server.serve_forever()
+  #scamper_server.send_ip('vw')
 
   while 1:
-    data, addr = s.recvfrom(1024)
-    closest_ip = find_closest_location(addr[0])
-    header = DNSHeader(data[0:12], parse=True)
-    question = DNSQuestion(data[12:])
-    domain = question.domain
-    if domain == dns_server:
-      new_header = DNSHeader(ancount=1, qdcount=1, id=header.id)
-      answer = DNSAnswer(domain, closest_ip)
-      packet = new_header.construct() + question.construct() + answer.construct()
-      s.sendto(packet, addr)
-
-def find_closest_location(ip_address):
-  coord = find_coordinates(ip_address)
-  try:
-    if coord['status'] == 'fail':
-      return host_list[0][1]
-  except Exception:
-    pass
-  closest_distance = None
-  closest_ip = None
-  for host in hosts:
-    distance = find_distance(hosts[host]['lat'], hosts[host]['lon'], coord['lat'], coord['lon'])
-    if closest_distance == None:
-      closest_distance = distance
-      closest_ip = hosts[host]['ip']
-    elif closest_distance < distance:
-      closest_distance = distance
-      closest_ip = hosts[host]['ip']
-  return closest_ip
-
-
-def find_distance(lat1, lon1, lat2, lon2):
-  lat1 = radians(lat1)
-  lon1 = radians(lon1)
-  lat2 = radians(lat2)
-  lon2 = radians(lon2)
-  lon_distance = lon2 - lon1
-  lat_distance = lat2 - lat1
-  a = (sin(lat_distance/2))**2 + cos(lat1) * cos(lat2) * (sin(lon_distance/2))**2
-  c = 2 * atan2(sqrt(a), sqrt(1-a))
-  return radius * c
-
-def find_coordinates(ip):
-  response = urllib2.urlopen('http://ip-api.com/json/' + ip)
-  return json.load(response)
+    time.sleep(1)
 
 def load_locations():
+  locator = Locator()
   for host in host_list:
-    data = find_coordinates(host[1])
+    data = locator.find_coordinates(host[1])
     hosts[host[0]] = {'ip':host[1], 'lat': data['lat'], 'lon': data['lon']}
 
 # parses the command line args
