@@ -3,6 +3,7 @@ from GeoLocator import Locator
 from dns_header import DNSHeader
 from dns_question import DNSQuestion
 from dns_answer import DNSAnswer
+from math import sin, cos, sqrt, atan2, radians
 
 class DNSRequestHandler(SocketServer.BaseRequestHandler):
   def handle(self):

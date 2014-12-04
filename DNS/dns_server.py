@@ -2,7 +2,6 @@ from optparse import OptionParser
 import socket
 from struct import *
 import json
-from math import sin, cos, sqrt, atan2, radians
 import json
 import threading
 import time
