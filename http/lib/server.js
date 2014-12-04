@@ -5,6 +5,7 @@ var http = require("http");
 var net = require("net");
 var util = require("util");
 var request = require("request");
+var _ = require("underscore");
 
 // Modules
 var cache = require("./cache");
@@ -26,11 +27,27 @@ var server = http.createServer(function(req, res){
  	// if we have data return it
  	// otherwise fetch from origin
  	if (data) {
+ 		var meta = cache.getMeta(url);
+ 		setMetadata(res, meta);
  		res.end(data);
  	} else {
  		request(url)
+ 			.on("response", function(meta){
+ 				cache.setMeta(url, meta);
+ 				setMetadata(res, meta);
+ 			})
  			.pipe(cache.set(url))
  			.pipe(res);
+ 	}
+
+ 	// Helper function for setting response metadata
+ 	// like statusCode and headers
+ 	function setMetadata(res, meta) {
+ 		if (!res || !meta) return;
+ 		res.statusCode = meta.statusCode;
+ 		_.each(meta.headers, function(val, key){
+ 			res.setHeader(key, val);
+ 		});
  	}
 });
 

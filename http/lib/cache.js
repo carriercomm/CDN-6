@@ -70,6 +70,7 @@ TransformStream.prototype.end = function () {
 
 var Cache = function() {
 	this.cache = {};
+	this.meta = {};
 	this.size = 0;
 };
 
@@ -82,12 +83,29 @@ Cache.prototype.get = function(key) {
 };
 
 /**
+ * Gets request metadata
+ */
+Cache.prototype.getMeta = function(key) {
+	return this.meta[key];
+};
+
+/**
  * Cache incoming data via a stream
  * Completion handler will be called
  * when all data has been cached
  */
 Cache.prototype.set = function(key, next) {
 	return new TransformStream(key, this, next);
+};
+
+/**
+ * Stores metadata info for a request
+ */
+Cache.prototype.setMeta = function(key, res) {
+	this.meta[key] = {
+		statusCode: res.statusCode,
+		headers: res.headers
+	};
 };
 
 /**
