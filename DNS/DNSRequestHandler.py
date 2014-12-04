@@ -30,10 +30,11 @@ class DNSRequestHandler(SocketServer.BaseRequestHandler):
     closest_ip = None
     for host in self.server.hosts:
       distance = self.find_distance(self.server.hosts[host]['lat'], self.server.hosts[host]['lon'], coord['lat'], coord['lon'])
+      print distance
       if closest_distance == None:
         closest_distance = distance
         closest_ip = self.server.hosts[host]['ip']
-      elif closest_distance < distance:
+      elif distance < closest_distance:
         closest_distance = distance
         closest_ip = self.server.hosts[host]['ip']
     return closest_ip
