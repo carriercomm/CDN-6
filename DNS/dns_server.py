@@ -12,7 +12,7 @@ host_list = [('ec2-54-174-6-90.compute-1.amazonaws.com', '205.251.192.27')]
 hosts = {}
 radius = 6373.0
 IP = '129.10.117.186'
-IP = '127.0.0.1'
+#IP = '127.0.0.1'
 
 def start_server(dns_server, port):
   s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
