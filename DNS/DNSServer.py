@@ -10,8 +10,12 @@ class DNSServer(SocketServer.ThreadingMixIn, SocketServer.UDPServer):
     self.ip_rtt[replica_ip][client_ip] = rtt
 
   def send_ip(self, client_ip):
+    '''
+    Remove comments when http scamper client is ready and this will 
+    send the data from DNS to HTTP
+    '''
     for host in self.host_list:
       s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-      s.connect((host[1], 44446))
-      data = json.dumps({'ip': client})
-      s.send(data)
+      #s.connect((host[1], 44446))
+      #data = json.dumps({'ip': client})
+      #s.send(data)

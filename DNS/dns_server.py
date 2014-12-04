@@ -27,29 +27,10 @@ IP = '127.0.0.1'
 SCAMPER_PORT = 44445
 
 def start_server(dns_server, port):
-  '''
-  server = DNSServer((IP, port), DNSRequestHandler)
-  server.dns_server = dns_server
-  server.ip_rtt = {}
-  server.hosts = hosts
-  server.host_list = host_list
-  dns_server_thread = threading.Thread(target=server.serve_forever)
-  dns_server_thread.setDaemon(True)
-  dns_server_thread.start()
-  '''
   scamper_server = ScamperServer((IP, 44446), ScamperRequestHandler)
   scamper_server.start_dns(IP, port, dns_server, hosts, host_list)
   scamper_server.serve_forever()
-  #scamper_server.send_ip('vw')
-  rtt = 500
-  scamper_server.dnsserver.ip_rtt['world'] = 'hey'
-  while 1:
-    time.sleep(1)
-    for host in host_list:
-      scamper_server.dnsserver.update_rtt('127.0.0.1', host[1], rtt)
-      rtt -=1
-    #print scamper_server.dnsserver.ip_rtt
-
+ 
 def load_locations():
   locator = Locator()
   for host in host_list:
