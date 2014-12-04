@@ -28,7 +28,7 @@ var server = http.createServer(function(req, res){
  	// otherwise fetch from origin
  	if (data) {
  		var meta = cache.getMeta(url);
- 		setMetadata(res, meta);
+ 		setMetadata(res, meta, true);
  		res.end(data);
  	} else {
  		request(url)
@@ -42,12 +42,13 @@ var server = http.createServer(function(req, res){
 
  	// Helper function for setting response metadata
  	// like statusCode and headers
- 	function setMetadata(res, meta) {
+ 	function setMetadata(res, meta, cacheHit) {
  		if (!res || !meta) return;
  		res.statusCode = meta.statusCode;
  		_.each(meta.headers, function(val, key){
  			res.setHeader(key, val);
  		});
+ 		res.setHeader("x-cache", cacheHit ? "hit" : "miss");
  	}
 });
 
