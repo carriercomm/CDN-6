@@ -5,6 +5,7 @@
 var fs = require("fs");
 var stream = require("stream");
 var util = require("util");
+var dist = require("./wiki-en");
 
 /*============================================================================*
  * Constants                                                                  *
@@ -53,8 +54,13 @@ TransformStream.prototype.end = function () {
 	this.buffer.apply(this, arguments);
 
 	// update cache and size
+	var key = this.key;
+	var path = key.split("/").pop();
 	this.cache.size += this.data.length;
-	this.cache.cache[this.key] = this.data;
+	this.cache.cache[key] = {
+		frequency: dist[path] || 0,
+		data: this.data
+	};
 
 	// check if we need to remove something
 	this.cache.evict();
@@ -79,7 +85,8 @@ var Cache = function() {
  * null if it does not exist
  */
 Cache.prototype.get = function(key) {
-	return this.cache[key];
+	var obj = this.cache[key];
+	return obj ? obj.data : null;
 };
 
 /**
@@ -127,8 +134,15 @@ Cache.prototype.remove = function(key) {
  */
 Cache.prototype.evict = function() {
 	while (this.size > MAX_BYTES) {
-		var keys = Object.keys(this.cache);
-		this.remove(keys[0]);
+		var low = null;
+		_.each(this.cache, function(obj, key){
+			if (!low || low.frequency > obj.frequency) {
+				low = { key: key, frequency: obj.frequency };
+			}
+		});
+		if (low) {
+			this.remove(low.key);
+		}
 	}
 };
 
