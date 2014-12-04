@@ -8,15 +8,30 @@ from math import sin, cos, sqrt, atan2, radians
 class DNSRequestHandler(SocketServer.BaseRequestHandler):
   def handle(self):
     self.data = self.request[0].strip()
-    closest_ip = self.find_closest_location(self.client_address[0])
+    best_ip = self.get_metrics(self.client_address[0])
+    if best_ip == None:
+      best_ip = self.find_closest_location(self.client_address[0])
     header = DNSHeader(self.data[0:12], parse=True)
     question = DNSQuestion(self.data[12:])
     domain = question.domain
     if domain == self.server.dns_server:
       new_header = DNSHeader(ancount=1, qdcount=1, id=header.id)
-      answer = DNSAnswer(domain, closest_ip)
+      answer = DNSAnswer(domain, best_ip)
       packet = new_header.construct() + question.construct() + answer.construct()
       self.request[1].sendto(packet, self.client_address)
+
+  def get_metrics(self, client_ip):
+    current_best_rtt = None
+    current_best_ip = None
+    for replica_ip in self.server.ip_rtt:
+      if client_ip in self.server.ip_rtt[replica_ip]:
+        if current_best_rtt == None:
+          current_best_rtt = self.server.ip_rtt[replica_ip][client_ip]
+          current_best_ip = replica_ip
+        elif self.server.ip_rtt[replica_ip][client_ip] < current_best_rtt:
+          current_best_rtt = self.server.ip_rtt[replica_ip][client_ip]
+          current_best_ip = replica_ip
+    return current_best_ip
 
   def find_closest_location(self, ip_address):
     locator = Locator()
@@ -30,7 +45,6 @@ class DNSRequestHandler(SocketServer.BaseRequestHandler):
     closest_ip = None
     for host in self.server.hosts:
       distance = self.find_distance(self.server.hosts[host]['lat'], self.server.hosts[host]['lon'], coord['lat'], coord['lon'])
-      print distance
       if closest_distance == None:
         closest_distance = distance
         closest_ip = self.server.hosts[host]['ip']
