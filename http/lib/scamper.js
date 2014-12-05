@@ -45,7 +45,7 @@ var server = net.createServer(function(socket){
 	socket.on("end", function(){
 		console.log("Socket closed");
 	});
-}).listen(44447);
+}).listen(44446);
 
 function rtt(ip, next) {
 	scamper = spawn("scamper", ["-i", ip]);

@@ -17,6 +17,6 @@ class DNSServer(SocketServer.ThreadingMixIn, SocketServer.UDPServer):
     '''
     for host in self.host_list:
       s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-      s.connect((host[1], 44447))
+      s.connect((host[1], 44446))
       data = json.dumps({'ip': client_ip})
       s.send(data)
