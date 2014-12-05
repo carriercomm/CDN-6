@@ -16,6 +16,9 @@ done
 
 echo "$name : $port"
 
+# kill server
+killall python > /dev/null 2>&1
+
 # start server
 cd ./CDN
 nohup ./dnsserver -p ${port} -n ${name} > /dev/null 2>&1 &
