@@ -23,10 +23,10 @@ host_list = [('ec2-54-174-6-90.compute-1.amazonaws.com', '54.174.6.90'),\
 hosts = {}
 IP = '129.10.117.186'
 IP = '127.0.0.1'
-SCAMPER_PORT = 44445
+SCAMPER_PORT = 44446
 
 def start_server(dns_server, port):
-  scamper_server = ScamperServer((IP, 44446), ScamperRequestHandler)
+  scamper_server = ScamperServer((IP, SCAMPER_PORT), ScamperRequestHandler)
   scamper_server.start_dns(IP, port, dns_server, hosts, host_list)
   scamper_server.serve_forever()
  

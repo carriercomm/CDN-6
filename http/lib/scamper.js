@@ -3,54 +3,48 @@
 var net = require("net");
 var spawn = require("child_process").spawn;
 
-// Connect to DNS server
-var options = {
+// Constants
+var DNS_OPTIONS = {
 	host: "localhost",
 	port: 44446
 };
-var dsocket = net.connect(options);
-
-dsocket.on("close", function(){
-	dsocket = null;
-});
-
-dsocket.on("error", function(err){
-	console.log(err);
-});
 
 // Open port for DNS to connect to
 var server = net.createServer(function(socket){
 	socket.on("data", function(data){
-		var text = data.toString("utf8");
 		var json = null;
 		try {
-			json = JSON.parse(text);
+			json = JSON.parse(data.toString("utf8"));
 		} catch(err) {
 			return socket.end();
 		}
-		var ip = json.ip;
-		rtt(ip, function(err, time){
-			if (!err) {
-				var res = JSON.stringify({
-					ip: ip,
-					rtt: time
-				});
-				if (dsocket) {
-					dsocket.write(res);
-				}
-			}
+		rtt(json.ip, function(err, time){
+			if (err) return;
+			sendRtt(json.ip, time);
 		});
 	});
+}).listen(44447);
 
-	socket.on("end", function(){
-		console.log("Socket closed");
+function sendRtt(ip, time) {
+	var socket = net.connect(DNS_OPTIONS, function(){
+		var res = JSON.stringify({
+			ip: ip,
+			rtt: time
+		});
+		socket.write(res);
+	}).on("close", function(){
+		socket = null;
+	}).on("error", function(err){
+		console.log(err);
+		socket = null;
 	});
-}).listen(44446);
+}
 
 function rtt(ip, next) {
-	scamper = spawn("scamper", ["-i", ip]);
-	
+
 	var text = "";
+
+	scamper = spawn("scamper", ["-c", "ping -c 1", "-i", ip]);
 
 	scamper.stdout.on("data", function(data){
 	 	text += data.toString("utf8").trim();
@@ -62,18 +56,15 @@ function rtt(ip, next) {
 	});
 
 	scamper.on("close", function (code) {
+		console.log(text);
 	 	var lines = text.split("\n");
-	 	var sum = 0;
-	 	var count = 0;
-	 	for (var i = 1; i < lines.length; i++) {
-	 		var line = lines[i].trim().split(" ");
-	 		var time = parseFloat(line[line.length-2]);
-	 		if (!isNaN(time)) {
-	 			sum += time;
-	 			count++;
-	 		}
-	 	}
-	 	var avg = sum / count;
+	 	console.log(lines);
+	 	var line = lines.pop();
+	 	var parts = line.split(" ");
+	 	var stats = parts[parts.length - 2];
+	 	var sparts = stats ? stats.split("/") : [];
+	 	var avg = parseFloat(sparts[0]);
+	 	console.log(avg);
 	 	next(null, isNaN(avg) ? -1 : 0);
 	});
 }

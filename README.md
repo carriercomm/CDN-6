@@ -72,3 +72,5 @@ The port the client will be using is ```44446```. This is static and will NOT ch
 
 Caching Policy
 ==============
+
+Our replica servers are designed to cache frequently requested content in order to optimize response time based on projected request load. To do this we generated a JSON key-value map of highly requested content and their request frequency. This can be seen in `./http/lib/wiki-en.json`. When a request comes in for content that is not in the cache, we cache the content regardless of request frequency and then run `evict()` just before returning the response to the client. The `evict` function first checks if our cache is large than the allowed cache size. If its not, then it returns immediately. If our cache is too large then we loop, removing items from the cache until we are under our cache size. By design, we should nearly always have a full cache. We remove the least frequently requested content when necessary. 
