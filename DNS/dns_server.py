@@ -41,10 +41,10 @@ def load_locations():
 parser = OptionParser()
 
 parser.add_option("-p", "--port", dest="port", 
-  help="choose a port to connect to", default=44444)
+  help="choose a port to connect to", default="44444")
 parser.add_option("-n", "--name", dest="name", 
   help="choose a name", default="cs5700cdnproject.ccs.neu.edu")
 (options, args) = parser.parse_args()
 
 load_locations()
-start_server(options.name, options.port)
+start_server(options.name, int(options.port))

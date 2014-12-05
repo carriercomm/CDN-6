@@ -2,6 +2,9 @@
 http-test:
 	./httpserver -p 40080 -o assets.tablelist.com
 
+dns-test:
+	./dnsserver -p 40080 -n test.com
+
 ssh:
 	ssh -i ~/.ssh/cs5700_rsa abarba@ec2-54-174-6-90.compute-1.amazonaws.com
 
