@@ -16,11 +16,11 @@ while getopts "u:i:p::o::n::" opt; do
   esac
 done
 
+# Stop DNS server
+ssh -o StrictHostKeyChecking=no -i ${keyfile} ${username}@cs5700cdnproject.ccs.neu.edu "bash -s" -- < ./scripts/dns/stop "$@"
+
 # Stop HTTP replica servers
 for host in $HOSTS
 do
   ssh -o StrictHostKeyChecking=no -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/stop "$@"
 done
-
-# Stop DNS server
-ssh -o StrictHostKeyChecking=no -i ${keyfile} ${username}@cs5700cdnproject.ccs.neu.edu "bash -s" -- < ./scripts/dns/stop "$@"

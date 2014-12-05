@@ -10,6 +10,7 @@ var _ = require("underscore");
 // Modules
 var cache = require("./cache");
 var metrics = require("./metrics");
+var scamper = require("./scamper");
 
 // Constants
 var PORT = process.argv[3];
@@ -54,24 +55,6 @@ var server = http.createServer(function(req, res){
 
 // Setup metrics
 metrics.bind(server);
-
-// DNS socket
-var options = {
-	host: 'cs5700cdnproject.ccs.neu.edu',
-	port: PORT
-};
-
-// connect to DNS server and send metrics
-var socket = net.connect(options, function(err){
-	setInterval(function(){
-		var json = JSON.stringify(metrics.toJSON());
-		socket.write(json);
-	}, 10 * 1000);
-});
-
-socket.on('error', function(){
-	console.log('Failed to connect to DNS server.');
-});
 
 // Start listening
 server.listen(PORT);

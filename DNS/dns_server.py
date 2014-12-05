@@ -2,7 +2,6 @@ from optparse import OptionParser
 import socket
 from struct import *
 import json
-import json
 import threading
 import time
 import SocketServer
@@ -12,15 +11,7 @@ from ScamperRequestHandler import ScamperRequestHandler
 from ScamperServer import ScamperServer
 from GeoLocator import Locator
 
-host_list = [('ec2-54-174-6-90.compute-1.amazonaws.com', '54.174.6.90'),\
-             ('ec2-54-149-9-25.us-west-2.compute.amazonaws.com', '54.149.9.25'),\
-             ('ec2-54-67-86-61.us-west-1.compute.amazonaws.com', '54.67.86.61'),\
-             ('ec2-54-72-167-104.eu-west-1.compute.amazonaws.com', '54.72.167.104'),\
-             ('ec2-54-93-182-67.eu-central-1.compute.amazonaws.com', '4.93.182.67'),\
-             ('ec2-54-169-146-226.ap-southeast-1.compute.amazonaws.com', '54.169.146.226'),\
-             ('ec2-54-65-104-220.ap-northeast-1.compute.amazonaws.com', '54.65.104.220'),\
-             ('ec2-54-66-212-131.ap-southeast-2.compute.amazonaws.com', '54.66.212.131'),\
-             ('ec2-54-94-156-232.sa-east-1.compute.amazonaws.com', '54.94.156.232')]
+host_list = [('localhost', '127.0.0.1')]
 hosts = {}
 IP = '129.10.117.186'
 IP = '127.0.0.1'
@@ -35,7 +26,7 @@ def load_locations():
   locator = Locator()
   for host in host_list:
     data = locator.find_coordinates(host[1])
-    hosts[host[0]] = {'ip':host[1], 'lat': data['lat'], 'lon': data['lon']}
+    #hosts[host[0]] = {'ip':host[1], 'lat': data['lat'], 'lon': data['lon']}
 
 # parses the command line args
 parser = OptionParser()

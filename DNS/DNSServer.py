@@ -1,5 +1,6 @@
 import SocketServer
 import socket
+import json
 
 class DNSServer(SocketServer.ThreadingMixIn, SocketServer.UDPServer):
   def update_rtt(self, client_ip, replica_ip, rtt):
@@ -16,6 +17,6 @@ class DNSServer(SocketServer.ThreadingMixIn, SocketServer.UDPServer):
     '''
     for host in self.host_list:
       s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-      #s.connect((host[1], 44446))
-      #data = json.dumps({'ip': client})
-      #s.send(data)
+      s.connect((host[1], 44447))
+      data = json.dumps({'ip': client_ip})
+      s.send(data)
