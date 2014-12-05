@@ -17,10 +17,12 @@ while getopts "u:i:p::o::n::" opt; do
 done
 
 # Start DNS server
+echo "starting dns..."
 ssh -o StrictHostKeyChecking=no -i ${keyfile} ${username}@cs5700cdnproject.ccs.neu.edu "bash -s" -- < ./scripts/dns/run "$@"
 
 # Start HTTP replica servers
 for host in $HOSTS
 do
+  echo "starting $host..."
   ssh -o StrictHostKeyChecking=no -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/run "$@"
 done

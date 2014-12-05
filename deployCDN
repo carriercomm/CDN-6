@@ -17,10 +17,12 @@ while getopts "u:i:p::o::n::" opt; do
 done
 
 # Deploy DNS server
+echo "deploying dns..."
 ssh -o StrictHostKeyChecking=no -i ${keyfile} ${username}@cs5700cdnproject.ccs.neu.edu "bash -s" -- < ./scripts/dns/deploy "$@"
 
 # Deploy HTTP replica servers
 for host in $HOSTS
 do
+  echo "deploying $host..."
   ssh -o StrictHostKeyChecking=no -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/deploy "$@"
 done
