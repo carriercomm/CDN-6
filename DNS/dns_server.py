@@ -43,7 +43,7 @@ parser = OptionParser()
 parser.add_option("-p", "--port", dest="port", 
   help="choose a port to connect to", default="44444")
 parser.add_option("-n", "--name", dest="name", 
-  help="choose a name", default="cs5700cdnproject.ccs.neu.edu")
+  help="choose a name", default="cs5700cdn.example.com")
 (options, args) = parser.parse_args()
 
 load_locations()
