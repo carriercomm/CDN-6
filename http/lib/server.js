@@ -15,13 +15,14 @@ var scamper = require("./scamper");
 // Constants
 var PORT = process.argv[3];
 var ORIGIN = process.argv[5];
+var ORIGIN_PORT = "8080";
 
 // Create server
 var server = http.createServer(function(req, res){
 
 	// origin url
- 	var url = util.format("http://%s%s", ORIGIN, req.url);
-
+ 	var url = util.format("http://%s:%s%s", ORIGIN, ORIGIN_PORT, req.url);
+ 	console.log(url);
  	// check cache
  	var data = cache.get(url);
 
