@@ -1,6 +1,9 @@
 from struct import *
 
 class DNSQuestion():
+  '''
+  Represents a DNS Question in a DNS Response/Request
+  '''
   def __init__(self, data, qtype=0, qclass=0):
     self.data = data
     self.qname = self.parse_qname(data)
@@ -11,13 +14,22 @@ class DNSQuestion():
     self.name_class = self.parse_class(self.name_length, data)
 
   def parse_type(self, name_length, data):
+    '''
+    parses the type field from a DNS Question
+    '''
     t = unpack('!H', data[name_length:name_length+2])[0]
     return t
 
   def parse_class(self, name_length, data):
+    '''
+    parses the class field
+    '''
     return ord(data[name_length+3:])
 
   def parse_qname(self, data):
+    '''
+    parses the qname field
+    '''
     get_size = True
     current_size = 0
     count = 0

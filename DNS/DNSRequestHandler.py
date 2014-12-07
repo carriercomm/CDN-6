@@ -6,7 +6,13 @@ from dns_answer import DNSAnswer
 from math import sin, cos, sqrt, atan2, radians
 
 class DNSRequestHandler(SocketServer.BaseRequestHandler):
+  '''
+  This is the handler for incoming DNS requests
+  '''
   def handle(self):
+    '''
+    This function handles the incoming DNS request
+    '''
     self.data = self.request[0].strip()
     best_ip = self.get_metrics(self.client_address[0])
     send_scamper = False
@@ -25,6 +31,10 @@ class DNSRequestHandler(SocketServer.BaseRequestHandler):
       self.server.send_ip(self.client_address[0])
 
   def get_metrics(self, client_ip):
+    '''
+    Finds the best replica for the client
+    The best replica is based off of smallest rtt 
+    '''
     current_best_rtt = None
     current_best_ip = None
     for replica_ip in self.server.ip_rtt:
@@ -38,6 +48,9 @@ class DNSRequestHandler(SocketServer.BaseRequestHandler):
     return current_best_ip
 
   def find_closest_location(self, ip_address):
+    '''
+    Finds the replcia that is closest to the given IP address
+    '''
     locator = Locator()
     coord = locator.find_coordinates(ip_address)
     try:
@@ -58,6 +71,9 @@ class DNSRequestHandler(SocketServer.BaseRequestHandler):
     return closest_ip
 
   def find_distance(self, lat1, lon1, lat2, lon2):
+    '''
+    Finds the distance between 2 lat/lon pairs
+    '''
     radius = 6373.0
     lat1 = radians(lat1)
     lon1 = radians(lon1)

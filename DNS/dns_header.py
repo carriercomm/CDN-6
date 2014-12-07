@@ -1,6 +1,9 @@
 from struct import *
 
 class DNSHeader():
+  '''
+  Represents a Header in a DNS Request/Response
+  '''
   def __init__(self, data=None, id=0, qr=0, opcode=0, aa=0, tc=0, rd=0, \
     ra=0, z=0, rcode=0, qdcount=0, ancount=0, nscount=0, arcount=0, parse=False):
     if parse:
@@ -22,6 +25,9 @@ class DNSHeader():
     
 
   def parse(self, data):
+    '''
+    parses all of the fields from a header
+    '''
     (id, flags, qdcount, ancount, nscount, arcount) = unpack('!HHHHHH', data)
     self.id = id
     self.flags = flags
@@ -41,6 +47,9 @@ class DNSHeader():
     self.arcount = arcount
 
   def construct(self):
+    '''
+    constructs a DNS Header from all of the fields in this instance
+    '''
     second_row = self.rcode +\
       (self.z << 4) +\
       (self.ra << 8) +\

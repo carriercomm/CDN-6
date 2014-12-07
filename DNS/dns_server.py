@@ -27,11 +27,17 @@ IP = '129.10.117.186'
 SCAMPER_PORT = 44446
 
 def start_server(dns_server, port):
+  '''
+  This function starts the dns server as well as the scamper server
+  '''
   scamper_server = ScamperServer((IP, SCAMPER_PORT), ScamperRequestHandler)
   scamper_server.start_dns(IP, port, dns_server, hosts, host_list)
   scamper_server.serve_forever()
  
 def load_locations():
+  '''
+  Loads all of the geolocations of the replica servers
+  '''
   locator = Locator()
   for host in host_list:
     data = locator.find_coordinates(host[1])
