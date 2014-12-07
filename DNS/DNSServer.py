@@ -18,6 +18,7 @@ class DNSServer(SocketServer.ThreadingMixIn, SocketServer.UDPServer):
     send the data from DNS to HTTP
     '''
     for host in self.host_list:
+      print "%s : %d" % (host[1], SCAMPER_PORT)
       s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
       s.connect((host[1], SCAMPER_PORT))
       data = json.dumps({'ip': client_ip})
