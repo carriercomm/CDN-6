@@ -5,12 +5,6 @@ import threading
 import time
 
 class ScamperServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
-  def send_ip(self, ip):
-    data = json.dunps({'ip': ip})
-    print 'Sending'
-    for host in host_list:
-      self.socket.sendto(data, (host[1], SCAMPER_PORT))
-
   def update_rtt(self, client_ip, replica_ip, rtt):
     self.dnsserver.update_rtt(client_ip, replica_ip, rtt)
 

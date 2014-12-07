@@ -5,7 +5,7 @@ var spawn = require("child_process").spawn;
 
 // Constants
 var DNS_OPTIONS = {
-	host: "localhost",
+	host: "cs5700cdnproject.ccs.neu.edu",
 	port: 44446
 };
 

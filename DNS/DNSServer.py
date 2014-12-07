@@ -19,7 +19,7 @@ class DNSServer(SocketServer.ThreadingMixIn, SocketServer.UDPServer):
     '''
     for host in self.host_list:
       print "%s : %d" % (host[1], SCAMPER_PORT)
-      s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+      s = socket.socket()
       s.connect((host[1], SCAMPER_PORT))
       data = json.dumps({'ip': client_ip})
       s.send(data)

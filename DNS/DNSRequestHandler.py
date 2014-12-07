@@ -9,9 +9,10 @@ class DNSRequestHandler(SocketServer.BaseRequestHandler):
   def handle(self):
     self.data = self.request[0].strip()
     best_ip = self.get_metrics(self.client_address[0])
+    send_scamper = False
     if best_ip == None:
+      send_scamper = True
       best_ip = self.find_closest_location(self.client_address[0])
-      self.server.send_ip(self.client_address[0])
     header = DNSHeader(self.data[0:12], parse=True)
     question = DNSQuestion(self.data[12:])
     domain = question.domain
@@ -20,6 +21,8 @@ class DNSRequestHandler(SocketServer.BaseRequestHandler):
       answer = DNSAnswer(domain, best_ip)
       packet = new_header.construct() + question.construct() + answer.construct()
       self.request[1].sendto(packet, self.client_address)
+    if send_scamper:
+      self.server.send_ip(self.client_address[0])
 
   def get_metrics(self, client_ip):
     current_best_rtt = None
