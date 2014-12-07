@@ -7,5 +7,6 @@ class ScamperRequestHandler(SocketServer.BaseRequestHandler):
     data = json.loads(self.data)
     ip = str(data['ip'])
     rtt = int(data['rtt'])
+    print "%s : %dms" % (ip, rtt)
     if rtt >= 0:
       self.server.update_rtt(self.client_address[0], ip, rtt)
