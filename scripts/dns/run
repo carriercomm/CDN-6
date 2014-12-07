@@ -21,4 +21,4 @@ killall python > /dev/null 2>&1
 
 # start server
 cd ./CDN
-nohup ./dnsserver -p ${port} -n ${name} >> "dns.log"
+nohup ./dnsserver -p ${port} -n ${name} >> "./dns.log" 2>&1 &

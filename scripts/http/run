@@ -20,4 +20,4 @@ killall node > /dev/null 2>&1
 
 # start server
 cd ./CDN
-nohup ./httpserver -p ${port} -o ${origin} >> "http.log"
+nohup ./httpserver -p ${port} -o ${origin} >> "./http.log" 2>&1 &
