@@ -56,9 +56,7 @@ function rtt(ip, next) {
 	});
 
 	scamper.on("close", function (code) {
-		console.log(text);
 	 	var lines = text.split("\n");
-	 	console.log(lines);
 	 	var line = lines.pop();
 	 	var parts = line.split(" ");
 	 	var stats = parts[parts.length - 2];

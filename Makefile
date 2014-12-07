@@ -15,7 +15,7 @@ deploy:
 	./deployCDN -u abarba -i ~/.ssh/cs5700_rsa
 
 run:
-	./runCDN -u abarba -i ~/.ssh/cs5700_rsa -p 40080 -o assets.tablelist.com -n cs5700cdnproject.ccs.neu.edu
+	./runCDN -u abarba -i ~/.ssh/cs5700_rsa -p 40080 -o assets.tablelist.com -n cs5700cdn.example.com
 
 stop:
 	./stopCDN -u abarba -i ~/.ssh/cs5700_rsa
