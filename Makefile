@@ -1,6 +1,9 @@
 
+default:
+	# CDN Project 5 - Andrew Barba and Gary Soeller
+
 http-test:
-	./httpserver -p 40080 -o assets.tablelist.com
+	./httpserver -p 40080 -o en.wikipedia.org
 
 dns-test:
 	./dnsserver -p 40080 -n test.com
@@ -15,7 +18,7 @@ deploy:
 	./deployCDN -u abarba -i ~/.ssh/cs5700_rsa
 
 run:
-	./runCDN -u abarba -i ~/.ssh/cs5700_rsa -p 40080 -o assets.tablelist.com -n cs5700cdn.example.com
+	./runCDN -u abarba -i ~/.ssh/cs5700_rsa -p 40080 -o en.wikipedia.org -n cs5700cdn.example.com
 
 stop:
 	./stopCDN -u abarba -i ~/.ssh/cs5700_rsa

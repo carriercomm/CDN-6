@@ -32,10 +32,14 @@ var server = http.createServer(function(req, res){
  		setMetadata(res, meta, true);
  		res.end(data);
  	} else {
- 		request(url)
+ 		request
+ 			.get(url)
  			.on("response", function(meta){
  				cache.setMeta(url, meta);
  				setMetadata(res, meta);
+ 			})
+ 			.on("error", function(err){
+ 				res.end(err);
  			})
  			.pipe(cache.set(url))
  			.pipe(res);
@@ -59,3 +63,13 @@ metrics.bind(server);
 // Start listening
 server.listen(PORT);
 console.log("HTTP Server " + PORT);
+
+// Catch uncaught errors
+process.on("uncaughtException", function(err) {
+ 	console.log("Caught exception: " + err);
+});
+
+// Log metrics
+setInterval(function(){
+	console.log(metrics.toJSON());
+}, 10 * 1000);
