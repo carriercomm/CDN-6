@@ -9,4 +9,4 @@ class ScamperRequestHandler(SocketServer.BaseRequestHandler):
     rtt = int(data['rtt'])
     print "%s : %dms" % (ip, rtt)
     if rtt >= 0:
-      self.server.update_rtt(self.client_address[0], ip, rtt)
+      self.server.update_rtt(ip, self.client_address[0], rtt)

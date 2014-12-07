@@ -24,5 +24,5 @@ ssh -o StrictHostKeyChecking=no -i ${keyfile} ${username}@cs5700cdnproject.ccs.n
 for host in $HOSTS
 do
   echo "deploying $host..."
-  ssh -o StrictHostKeyChecking=no -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/deploy "$@"
+  #ssh -o StrictHostKeyChecking=no -i ${keyfile} ${username}@${host} "bash -s" -- < ./scripts/http/deploy "$@"
 done

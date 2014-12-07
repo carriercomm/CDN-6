@@ -35,7 +35,7 @@ def load_locations():
   locator = Locator()
   for host in host_list:
     data = locator.find_coordinates(host[1])
-    #hosts[host[0]] = {'ip':host[1], 'lat': data['lat'], 'lon': data['lon']}
+    hosts[host[0]] = {'ip':host[1], 'lat': data['lat'], 'lon': data['lon']}
 
 # parses the command line args
 parser = OptionParser()
