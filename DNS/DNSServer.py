@@ -23,3 +23,4 @@ class DNSServer(SocketServer.ThreadingMixIn, SocketServer.UDPServer):
       s.connect((host[1], SCAMPER_PORT))
       data = json.dumps({'ip': client_ip})
       s.send(data)
+      s.close()
