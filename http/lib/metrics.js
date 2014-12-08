@@ -3,7 +3,7 @@
  *============================================================================*/
  
 var util = require("util");
-var _ = require("underscore");
+var _ = require("./underscore");
 var utils = require("./utils");
 var cache = require("./cache");
 

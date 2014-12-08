@@ -4,8 +4,7 @@ var fs = require("fs");
 var http = require("http");
 var net = require("net");
 var util = require("util");
-var request = require("request");
-var _ = require("underscore");
+var _ = require("./underscore");
 
 // Modules
 var cache = require("./cache");
@@ -22,7 +21,7 @@ var server = http.createServer(function(req, res){
 
 	// origin url
  	var url = util.format("http://%s:%s%s", ORIGIN, ORIGIN_PORT, req.url);
- 	console.log(url);
+
  	// check cache
  	var data = cache.get(url);
 
@@ -33,17 +32,15 @@ var server = http.createServer(function(req, res){
  		setMetadata(res, meta, true);
  		res.end(data);
  	} else {
- 		request
- 			.get(url)
- 			.on("response", function(meta){
- 				cache.setMeta(url, meta);
- 				setMetadata(res, meta);
+ 		http
+ 			.get(url, function(response){
+ 				cache.setMeta(url, response);
+ 				setMetadata(res, response);
+ 				response.pipe(cache.set(url)).pipe(res);
  			})
  			.on("error", function(err){
- 				res.end(err);
- 			})
- 			.pipe(cache.set(url))
- 			.pipe(res);
+ 				res.end(err.toString("utf8"));
+ 			});
  	}
 
  	// Helper function for setting response metadata
@@ -55,6 +52,7 @@ var server = http.createServer(function(req, res){
  			res.setHeader(key, val);
  		});
  		res.setHeader("x-cache", cacheHit ? "hit" : "miss");
+ 		res.setHeader("x-powered-by", "node.js/0.10.33");
  	}
 });
 

@@ -5,7 +5,7 @@
 var fs = require("fs");
 var stream = require("stream");
 var util = require("util");
-var _ = require("underscore");
+var _ = require("./underscore");
 var dist = require("./wiki-en");
 
 /*============================================================================*
