@@ -1,7 +1,6 @@
 #!/bin/bash
 port=  name=
 
-echo "sshd in"
 # parse required arguments
 while getopts "p:n:o::u::i::" opt; do
   case $opt in
@@ -13,8 +12,6 @@ while getopts "p:n:o::u::i::" opt; do
       ;;
   esac
 done
-
-echo "$name : $port"
 
 # kill server
 killall python > /dev/null 2>&1

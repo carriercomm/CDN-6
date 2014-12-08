@@ -39,6 +39,7 @@ var server = http.createServer(function(req, res){
  				response.pipe(cache.set(url)).pipe(res);
  			})
  			.on("error", function(err){
+ 				res.statusCode = 500;
  				res.end(err.toString("utf8"));
  			});
  	}

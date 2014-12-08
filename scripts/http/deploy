@@ -11,6 +11,3 @@ git clone https://github.com/soelgary/CDN.git CDN && cd CDN
 
 # Update script permissions
 chmod +x ./httpserver
-
-# install http dependencies
-cd ./http && npm install
