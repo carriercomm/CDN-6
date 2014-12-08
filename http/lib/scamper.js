@@ -1,15 +1,27 @@
+/*============================================================================*
+ * Dependencies                                                               *
+ *============================================================================*/
 
-// Dependencies
 var net = require("net");
 var spawn = require("child_process").spawn;
 
-// Constants
+/*============================================================================*
+ * Constants                                                                  *
+ *============================================================================*/
+
 var DNS_OPTIONS = {
 	host: "cs5700cdnproject.ccs.neu.edu",
 	port: 44446
 };
 
-// Open port for DNS to connect to
+/*============================================================================*
+ * Server                                                                     *
+ *============================================================================*/
+
+/**
+ * Simple TCP server used to accept
+ * incoming requests for client round trip times.
+ */
 var server = net.createServer(function(socket){
 	socket.on("data", function(data){
 		var json = null;
@@ -25,6 +37,14 @@ var server = net.createServer(function(socket){
 	});
 }).listen(44447);
 
+/*============================================================================*
+ * Response                                                                   *
+ *============================================================================*/
+
+/**
+ * Send the rtt for the given IP to the 
+ * DNS server via a simple TCP socket.
+ */
 function sendRtt(ip, time) {
 	var socket = net.connect(DNS_OPTIONS, function(){
 		var res = JSON.stringify({
@@ -40,6 +60,16 @@ function sendRtt(ip, time) {
 	});
 }
 
+/*============================================================================*
+ * Scamper                                                                    *
+ *============================================================================*/
+
+/**
+ * Calculate roud trip time to a client
+ * Start a new scamper process and callback
+ * rtt in ms when complete. -1 indicates
+ * something went wrong.
+ */
 function rtt(ip, next) {
 
 	var text = "";

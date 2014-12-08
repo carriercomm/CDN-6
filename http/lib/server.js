@@ -1,22 +1,33 @@
+/*============================================================================*
+ * Dependencies                                                               *
+ *============================================================================*/
 
-// Dependencies
 var fs = require("fs");
 var http = require("http");
 var net = require("net");
 var util = require("util");
 var _ = require("./underscore");
 
-// Modules
+/*============================================================================*
+ * Modules                                                                    *
+ *============================================================================*/
+
 var cache = require("./cache");
 var metrics = require("./metrics");
 var scamper = require("./scamper");
 
-// Constants
+/*============================================================================*
+ * Constants                                                                  *
+ *============================================================================*/
+
 var PORT = process.argv[3];
 var ORIGIN = process.argv[5];
 var ORIGIN_PORT = "8080";
 
-// Create server
+/*============================================================================*
+ * HTTP Server                                                                *
+ *============================================================================*/
+
 var server = http.createServer(function(req, res){
 
 	// origin url
@@ -57,19 +68,27 @@ var server = http.createServer(function(req, res){
  	}
 });
 
-// Setup metrics
-metrics.bind(server);
-
 // Start listening
 server.listen(PORT);
 console.log("HTTP Server " + PORT);
 
-// Catch uncaught errors
-process.on("uncaughtException", function(err) {
- 	console.log("Caught exception: " + err);
-});
+/*============================================================================*
+ * Metrics                                                                    *
+ *============================================================================*/
+
+// Setup metrics
+metrics.bind(server);
 
 // Log metrics
 setInterval(function(){
 	console.log(metrics.toJSON());
 }, 10 * 1000);
+
+/*============================================================================*
+ * Error Handling                                                             *
+ *============================================================================*/
+
+// Catch uncaught errors
+process.on("uncaughtException", function(err) {
+ 	console.log("Caught exception: " + err);
+});
