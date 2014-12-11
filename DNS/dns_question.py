@@ -7,7 +7,6 @@ class DNSQuestion():
   def __init__(self, data, qtype=0, qclass=0):
     self.data = data
     self.qname = self.parse_qname(data)
-    print self.qname
     self.qtype = qtype
     self.qclass = qclass
     self.name_length = len(self.qname) + 1
