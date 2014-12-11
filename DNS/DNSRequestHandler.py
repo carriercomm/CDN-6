@@ -28,8 +28,7 @@ class DNSRequestHandler(SocketServer.BaseRequestHandler):
       packet = new_header.construct() + question.construct() + answer.construct()
       self.request[1].sendto(packet, self.client_address)
     if send_scamper:
-      pass
-      #self.server.send_ip(self.client_address[0])
+      self.server.send_ip(self.client_address[0])
 
   def get_metrics(self, client_ip):
     '''
