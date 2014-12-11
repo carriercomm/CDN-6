@@ -23,7 +23,7 @@ host_list = [('ec2-54-174-6-90.compute-1.amazonaws.com', '54.174.6.90'),\
 
 hosts = {}
 IP = '129.10.117.186'
-IP = '127.0.0.1'
+#IP = '127.0.0.1'
 SCAMPER_PORT = 44446
 
 def start_server(dns_server, port):
