@@ -23,7 +23,7 @@ class DNSRequestHandler(SocketServer.BaseRequestHandler):
     question = DNSQuestion(self.data[12:])
     domain = question.domain
     if domain == self.server.dns_server:
-      new_header = DNSHeader(ancount=1, qdcount=1, id=header.id)
+      new_header = DNSHeader(ancount=1, qdcount=1, id=header.id, qr=1)
       answer = DNSAnswer(domain, best_ip)
       packet = new_header.construct() + question.construct() + answer.construct()
       self.request[1].sendto(packet, self.client_address)
