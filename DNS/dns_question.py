@@ -41,7 +41,6 @@ class DNSQuestion():
     self.packed_qname = ''
     for char in data:
       next_char = unpack('!c', char)[0]
-      print next_char
       if get_size:
         current_size = ord(next_char)
         self.packed_qname += pack('!B', current_size)
