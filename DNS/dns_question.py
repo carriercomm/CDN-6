@@ -24,7 +24,10 @@ class DNSQuestion():
     '''
     parses the class field
     '''
-    return ord(data[name_length+3:])
+    try:
+      return ord(data[name_length+3:])
+    except Exception:
+      return 1
 
   def parse_qname(self, data):
     '''
@@ -34,16 +37,19 @@ class DNSQuestion():
     current_size = 0
     count = 0
     domain = ''
+    self.packed_qname = ''
     for char in data:
       next_char = unpack('!c', char)[0]
       if get_size:
         current_size = ord(next_char)
+        self.packed_qname += pack('!B', current_size)
         get_size = False
         if current_size == 0:
           self.domain = domain[1:]
           return domain[1:] + '.'
         domain += '.'
       else:
+        self.packed_qname += pack('!B', ord(next_char))
         domain += next_char
         count += 1
         if count == current_size:
@@ -53,7 +59,7 @@ class DNSQuestion():
     print data, domain
 
   def construct(self):
-    return self.data
+    return self.packed_qname + pack('!HH', self.name_type, self.name_class)
 
   def __str__(self):
     return 'DNS Question\n' +\
